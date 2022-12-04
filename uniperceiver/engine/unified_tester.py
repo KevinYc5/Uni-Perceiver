@@ -149,7 +149,7 @@ def test_cls(cfg, model, test_data_loader, evaluator, epoch, amp_fp16, task=None
                 res["output"] = res["output"].float()
 
             outputs = res["output"]
-
+            print("outputs: ", outputs)
             if task_type == 'vqa':
                 u_logits = res["output"]
                 outputs = torch.softmax(u_logits, dim=-1)

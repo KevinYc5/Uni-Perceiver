@@ -6,7 +6,7 @@ from tqdm import trange
 # import jsonlines
 from PIL import Image, ImageFile
 import copy
-
+import einops
 # ImageFile.LOAD_TRUNCATED_IMAGES = True
 import cv2
 import base64
@@ -518,14 +518,14 @@ class ImageTextPairDataset(Dataset):
                 continue
 
     def _data_transform(self, idb, index=None, as_numpy_as_possible=False, fail_image_fill=(0.0, 0.0, 0.0), image_path=None, image_id=None):
-
+        # import sys
+        # sys.exit()
         if self.dataset_name in ['VG', 'MSCOCO', 'FLICKR']:
             image = self._load_image(image_path)
         else:
             if index is None:
                 index = self.img_path_to_index[idb['image']]
             # image data
-
             image = self.get_image(idb, index=index)
             if isinstance(image, Image.Image):
                 w0, h0 = image.size
@@ -535,8 +535,34 @@ class ImageTextPairDataset(Dataset):
             else:
                 raise NotImplementedError
 
+        def center_crop(width, height, img):
+            resample = {'box': Image.BOX, 'lanczos': Image.LANCZOS}['lanczos']
+            crop = np.min(img.shape[:2])
+            img = img[(img.shape[0] - crop) // 2: (img.shape[0] + crop) // 2,
+                (img.shape[1] - crop) // 2: (img.shape[1] + crop) // 2]
+            try:
+                img = Image.fromarray(img, 'RGB')
+            except:
+                img = Image.fromarray(img)
+            img = img.resize((width, height), resample)
+
+            return np.array(img).astype(np.uint8)
+        
+        # image_path = "/home/kevin/kevin/Uni-Perceiver/small_source_dataset/open_source_dataset/mscoco_caption/coco_origin/train2014/COCO_train2014_000000531056.jpg"
+        # my preprocess
+        image = Image.open(image_path).convert("RGB")
+        image = np.array(image).astype(np.uint8)
+        image = center_crop(256, 256, image).astype(np.float32)
+        image = (image / 127.5 - 1.0).astype(np.float32)
+        image = einops.rearrange(image, 'h w c -> c h w')
+        image = (image + 1.0) * 127.5
+        image = einops.rearrange(image, 'c h w -> h w c')
+        image = Image.fromarray(image.astype(np.uint8), 'RGB')
+
         if self.transform is not None:
             image = self.transform(image)
+
+
 
         if image_id is not None:
             img_sample_info = {
@@ -912,7 +938,7 @@ def build_transform(is_train,
         )
 
         return transform
-
+    print("build transform")
     t = []
     size = int((256 / 224) * input_size)
     t.append(
