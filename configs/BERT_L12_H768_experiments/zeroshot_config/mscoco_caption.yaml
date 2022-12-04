@@ -67,8 +67,8 @@ TASKS:
       TRAIN_BATCH_SIZE: 200
       TEST_BATCH_SIZE: 8
       NUM_WORKERS: 4
-      FEATS_FOLDER: 'open_source_dataset/mscoco_dataset/coco_origin'
-      ANNO_FOLDER:  'open_source_dataset/mscoco_dataset/new_annotations'
+      FEATS_FOLDER: 'open_source_dataset/mscoco_caption/coco_origin'
+      ANNO_FOLDER:  'open_source_dataset/mscoco_caption/annotations'
       S3_PATH: 's3://coco/'
       SEQ_PER_SAMPLE:  1
       CACHE_MODE: True
@@ -97,8 +97,8 @@ TASKS:
       VOCAB: 'CLIP'
       ID_KEY: 'image_id'
       VALUE: 'caption'
-      VAL_ANNFILE: 'open_source_dataset/mscoco_dataset/new_annotations/captions_val5k.json'
-      TEST_ANNFILE: 'open_source_dataset/mscoco_dataset/new_annotations/captions_test5k.json'
+      VAL_ANNFILE: 'open_source_dataset/mscoco_caption/annotations/captions_val5k.json'
+      TEST_ANNFILE: 'open_source_dataset/mscoco_caption/annotations/captions_test5k.json'
       GENERATION_MODE: True
 
 

@@ -26,7 +26,7 @@ import  torch.distributed.nn
 from uniperceiver.tokenization import ClipTokenizer
 import logging
 from uniperceiver.losses import build_losses
-
+import sys
 
 __all__ = ["MultiTaskTransformerEncoder"]
 
@@ -314,6 +314,11 @@ class MultiTaskTransformerEncoder(BaseEncoderDecoder):
 
     def _forward_data(self, data_list:list, task_info:dict, history_states=None, return_all=False):
 
+        # save model
+        torch.save(self.video_embed.state_dict(), "video_embed.pth")
+        torch.save(self.token_embed.state_dict(), "token_embed.pth")
+        torch.save(self.fused_encoder.state_dict(), "fused_encoder.pth")
+        sys.exit()
         # data is dict value
         for data in data_list:
 

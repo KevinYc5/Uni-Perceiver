@@ -170,6 +170,7 @@ if __name__ == "__main__":
         init_distributed_mode(args)
         main(args)
     elif args.init_method == 'pytorch':
+        init_distributed_mode(args)
         main(args)
     else:
         # follow 'd2' use default `mp.spawn` to init dist training

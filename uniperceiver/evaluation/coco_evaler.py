@@ -46,7 +46,10 @@ class COCOEvaler(object):
             return {}
 
         cocoRes = self.coco.loadRes(in_file.name)
-        cocoEval = COCOEvalCap(self.coco, cocoRes)
+        try:
+            cocoEval = COCOEvalCap(self.coco, cocoRes, df="corpus")
+        except:
+            cocoEval = COCOEvalCap(self.coco, cocoRes)
         cocoEval.evaluate()
         os.remove(in_file.name)
         return cocoEval.eval
