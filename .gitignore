@@ -146,3 +146,5 @@ dist_url_*
 
 # data
 small_source_dataset
+pycocoevalcap
+*.pth

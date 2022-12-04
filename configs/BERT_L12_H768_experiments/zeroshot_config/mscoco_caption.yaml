@@ -65,7 +65,7 @@ TASKS:
       TARGET_SET: ['Vocab_Word']
     DATALOADER:
       TRAIN_BATCH_SIZE: 200
-      TEST_BATCH_SIZE: 8
+      TEST_BATCH_SIZE: 16
       NUM_WORKERS: 4
       FEATS_FOLDER: 'open_source_dataset/mscoco_caption/coco_origin'
       ANNO_FOLDER:  'open_source_dataset/mscoco_caption/annotations'
